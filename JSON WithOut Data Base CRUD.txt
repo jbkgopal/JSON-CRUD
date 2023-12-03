@@ -1,0 +1,98 @@
+JSON WithOut Data Base CRUD
+
+package com.TKAGopal.Dummy.API;
+
+import java.util.ArrayList;
+
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+@RestController
+public class StudentController {
+
+	@GetMapping("singleRecord")  
+	public Student singleRecord() {  // To get a Single record Using Default Method               
+		Student s = new Student(1, "Gopal");
+		System.out.println(s);
+		return s;
+	}
+
+	@GetMapping("multipleRecord")
+	public ArrayList<Student> multipleRecord() {
+		ArrayList<Student> a = new ArrayList<Student>();
+		Student s1 = new Student(1, "Gopal");
+		Student s2 = new Student(2, "TKAGopal");
+		a.add(s1);
+		a.add(s2);
+		System.out.println(s1);
+		System.out.println(s2);
+		return a;
+	}
+
+	ArrayList<Student> al = new ArrayList<Student>();
+
+	public StudentController() { // no return type
+		al.add(new Student(111, "AAA"));
+		al.add(new Student(222, "AAA"));
+		al.add(new Student(333, "AAA"));
+	}
+	
+	@GetMapping("all")
+	public ArrayList<Student> all() {
+		return al;
+	}
+
+	@GetMapping("getSingleRecord/{id}")
+	public Student getSingleRecord(@PathVariable int id) {  // To get a Single record Using Parameter Method
+		Student s = new Student();
+		for (Student student : al) {
+			if (student.id == id) {
+				s = student;
+			}
+		}
+		System.out.println(s);
+		return s;
+	}
+
+	@PostMapping("addSingleRecord")
+	public ArrayList<Student> addSingleRecord(@RequestBody Student student) { // To add a Single record Using Parameter Method
+		al.add(student);
+		return al;
+	}
+	
+	@PostMapping("addMultipleRecord")
+	public ArrayList<Student> addMultipleRecord(@RequestBody ArrayList<Student> student) { // To add a Multiple record Using Parameter Method
+		al.addAll(student);
+		return al;
+	}
+
+	@PutMapping("updateSingleRecord")
+	public ArrayList<Student> updateSingleRecord(@RequestBody Student stu) { // To add a Single record Using Parameter
+		Student s = new Student();
+		for (Student student : al) {
+			if (student.id == stu.id) {
+				s = student;
+			}
+		}
+		s.setId(stu.id);
+		s.setName(stu.name);
+		return al;
+	}
+
+	@DeleteMapping("deleteSingle/{id}")
+	public ArrayList<Student> deleteSingle(@PathVariable int id) {
+		Student s = new Student();
+		for (Student student : al) {
+			if (student.id == id) {
+				s = student;
+			}
+		}
+		al.remove(s);
+		System.out.println(s);
+		return al;
+	}
+}
+
